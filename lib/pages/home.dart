@@ -73,6 +73,7 @@ class _HomeState extends State<Home> {
 
                         //Notify User
                         Toasts.show(
+                          context: context,
                           message: "A Tocar: ${audioItem[index]!.audioName}",
                         )
                       },
@@ -96,6 +97,7 @@ class _HomeState extends State<Home> {
                               Padding(
                                 padding: const EdgeInsets.all(10.0),
                                 child: Buttons.downloadAudio(
+                                  context: context,
                                   audioURL: extractAudioURL(
                                     audioHTML: audioItem[index]!.audioURL,
                                   ),

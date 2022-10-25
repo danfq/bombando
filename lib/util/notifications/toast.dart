@@ -1,11 +1,14 @@
+import 'package:flutter/material.dart';
 import 'package:toast/toast.dart';
 
 ///Toasts
 class Toasts {
   ///Show with Custom Message
   static void show({
+    required BuildContext context,
     required String message,
   }) {
+    ToastContext().init(context);
     Toast.show(message);
   }
 }

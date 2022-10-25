@@ -1,6 +1,7 @@
 import 'package:bombando/util/notifications/toast.dart';
 import 'package:bombando/util/data/web.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 ///Download Utilities
@@ -12,6 +13,7 @@ class Download {
 
   ///Download Audio to Custom Directory
   static Future<void> audioCustomDirectory({
+    required BuildContext context,
     required String audioURL,
     required String fileDirectory,
   }) async {
@@ -29,12 +31,16 @@ class Download {
 
         //Save Audio
         await saveAudio(
+          context: context,
           audioURL: audioURL,
           fileDirectory: fileDirectory,
         );
       }
     } catch (error) {
-      Toasts.show(message: error.toString());
+      Toasts.show(
+        context: context,
+        message: error.toString(),
+      );
     } finally {
       isLoading = false;
     }
@@ -42,6 +48,7 @@ class Download {
 
   ///Save Audio
   static Future<void> saveAudio({
+    required BuildContext context,
     required String audioURL,
     required String fileDirectory,
   }) async {
@@ -52,6 +59,7 @@ class Download {
       currentProgress = "${((current / total) * 100).toStringAsFixed(0)}%";
 
       Toasts.show(
+        context: context,
         message: "Progresso: ${((current / total) * 100).toStringAsFixed(0)}%",
       );
     });
