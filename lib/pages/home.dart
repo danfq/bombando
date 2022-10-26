@@ -84,13 +84,11 @@ class _HomeState extends State<Home> {
                             children: [
                               Padding(
                                 padding: const EdgeInsets.all(10.0),
-                                child: Expanded(
-                                  child: Text(
-                                    audioItem[index]!.audioName,
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 14.0,
-                                    ),
+                                child: Text(
+                                  audioItem[index]!.audioName,
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 14.0,
                                   ),
                                 ),
                               ),
