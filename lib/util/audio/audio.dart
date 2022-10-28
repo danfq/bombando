@@ -17,4 +17,15 @@ class Audio {
     //Stop Audio
     await audioPlayer.stop();
   }
+
+  ///Extract Audio URL
+  static String extractAudioURL({required String audioHTML}) {
+    final startIndex = audioHTML.indexOf("play('");
+    final endIndex = audioHTML.indexOf(
+      ".mp3',",
+      startIndex + "play('".length,
+    );
+
+    return audioHTML.substring(startIndex + "play('".length, endIndex);
+  }
 }

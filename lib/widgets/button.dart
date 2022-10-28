@@ -29,11 +29,13 @@ class Buttons {
                     context: context,
                     message: "Toque Definido!",
                   );
+                  Navigator.pop(context);
                 } else {
                   Toasts.show(
                     context: context,
                     message: "Erro ao Definir Toque",
                   );
+                  Navigator.pop(context);
                 }
               },
             );
@@ -46,11 +48,13 @@ class Buttons {
                     context: context,
                     message: "Som de Notificação Definido!",
                   );
+                  Navigator.pop(context);
                 } else {
                   Toasts.show(
                     context: context,
                     message: "Erro ao Definir Som de Notificação",
                   );
+                  Navigator.pop(context);
                 }
               },
             );
@@ -63,11 +67,13 @@ class Buttons {
                     context: context,
                     message: "Som de Alarme Definido!",
                   );
+                  Navigator.pop(context);
                 } else {
                   Toasts.show(
                     context: context,
                     message: "Erro ao Definir Som de Alarme",
                   );
+                  Navigator.pop(context);
                 }
               },
             );

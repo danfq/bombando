@@ -2,9 +2,11 @@ import 'package:bombando/util/audio/audio.dart';
 import 'package:bombando/util/audio/model.dart';
 import 'package:bombando/util/data/web.dart';
 import 'package:bombando/util/notifications/toast.dart';
+import 'package:bombando/widgets/audio.dart';
 import 'package:bombando/widgets/button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -23,16 +25,6 @@ class _HomeState extends State<Home> {
         statusBarColor: Color(0xFFFAFAFA),
       ),
     );
-
-    String extractAudioURL({required String audioHTML}) {
-      final startIndex = audioHTML.indexOf("play('");
-      final endIndex = audioHTML.indexOf(
-        ".mp3',",
-        startIndex + "play('".length,
-      );
-
-      return audioHTML.substring(startIndex + "play('".length, endIndex);
-    }
 
     //App
     return Scaffold(
@@ -54,60 +46,117 @@ class _HomeState extends State<Home> {
           builder: (context, AsyncSnapshot<Map<int, AudioFile>> snapshot) {
             if (snapshot.connectionState == ConnectionState.done &&
                 snapshot.data != null) {
-              return ListView.builder(
+              final audioItem = snapshot.data!;
+
+              return GridView.custom(
                 physics: const BouncingScrollPhysics(),
-                itemCount: snapshot.data!.length,
-                itemBuilder: (context, index) {
-                  final audioItem = snapshot.data!;
-
-                  return Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: GestureDetector(
-                      onTap: () => {
-                        //Play Audio from URL
-                        Audio.playFromURL(
-                          url: extractAudioURL(
-                            audioHTML: audioItem[index]!.audioURL,
+                gridDelegate: SliverWovenGridDelegate.count(
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 0.4,
+                  crossAxisSpacing: 0.4,
+                  pattern: [
+                    const WovenGridTile(0.8),
+                    const WovenGridTile(
+                      2 / 2,
+                      crossAxisRatio: 1,
+                      alignment: AlignmentDirectional.centerStart,
+                    ),
+                  ],
+                ),
+                childrenDelegate: SliverChildBuilderDelegate(
+                  childCount: snapshot.data!.length,
+                  (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: GestureDetector(
+                        onTap: () => {
+                          //Play Audio from URL
+                          Audio.playFromURL(
+                            url: Audio.extractAudioURL(
+                              audioHTML: audioItem[index]!.audioURL,
+                            ),
                           ),
-                        ),
 
-                        //Notify User
-                        Toasts.show(
+                          //Notify User
+                          Toasts.show(
+                            context: context,
+                            message: "A Tocar: ${audioItem[index]!.audioName}",
+                          )
+                        },
+                        onLongPress: () {
+                          showModalBottomSheet(
+                            backgroundColor: const Color(0xFFFFFFFF),
+                            context: context,
+                            builder: (context) {
+                              return Container(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(20.0),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      const Text(
+                                        "Utilizar Som",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      const Padding(
+                                        padding: EdgeInsets.all(10.0),
+                                        child: Text(
+                                          "Podes definir este som como qualquer uma das seguintes opções:",
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(40.0),
+                                        child: Column(
+                                          children: [
+                                            Buttons.useButton(
+                                              context: context,
+                                              audioURL:
+                                                  "${Web.audioURL}/${Audio.extractAudioURL(
+                                                audioHTML:
+                                                    audioItem[index]!.audioURL,
+                                              )}.mp3",
+                                              usageTitle: "Toque de Chamada",
+                                            ),
+                                            Buttons.useButton(
+                                              context: context,
+                                              audioURL:
+                                                  "${Web.audioURL}/${Audio.extractAudioURL(
+                                                audioHTML:
+                                                    audioItem[index]!.audioURL,
+                                              )}.mp3",
+                                              usageTitle: "Notificação",
+                                            ),
+                                            Buttons.useButton(
+                                              context: context,
+                                              audioURL:
+                                                  "${Web.audioURL}/${Audio.extractAudioURL(
+                                                audioHTML:
+                                                    audioItem[index]!.audioURL,
+                                              )}.mp3",
+                                              usageTitle: "Alarme",
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                        },
+                        child: PrettyButtons.audio(
                           context: context,
-                          message: "A Tocar: ${audioItem[index]!.audioName}",
-                        )
-                      },
-                      child: Card(
-                        elevation: 4.0,
-                        child: Container(
-                          child: Column(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(10.0),
-                                child: Text(
-                                  audioItem[index]!.audioName,
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 14.0,
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(10.0),
-                                child: Buttons.useAudio(
-                                  context: context,
-                                  audioURL: extractAudioURL(
-                                    audioHTML: audioItem[index]!.audioURL,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
+                          name: audioItem[index]!.audioName,
+                          url: audioItem[index]!.audioURL,
                         ),
                       ),
-                    ),
-                  );
-                },
+                    );
+                  },
+                ),
               );
             } else {
               return const Center(

@@ -15,8 +15,14 @@ class Web {
       Uri.parse(url),
     );
 
+    //Remove Ads
+    final String adFreeContent = request.body.replaceAll(
+      '<div class="multiaspect-banner-ad mt-2 mb-4">',
+      "",
+    );
+
     //Return Content
-    return request.body;
+    return adFreeContent;
   }
 
   ///Sound DIVs
