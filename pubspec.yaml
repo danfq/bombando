@@ -23,6 +23,7 @@ dependencies:
   dio: ^4.0.6
   path_provider: ^2.0.11
   ringtone_set: ^0.0.3
+  icons_launcher: ^2.0.5
 
 dev_dependencies:
   flutter_test:
@@ -33,3 +34,16 @@ dev_dependencies:
 flutter:
 
   uses-material-design: true
+
+#Launcher Icons
+icons_launcher:
+  image_path: "assets/images/logo.png"
+  platforms:
+    android:
+      enable: true
+    ios:
+      enable: true
+    windows:
+      enable: true
+    linux:
+      enable: true
