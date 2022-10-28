@@ -38,8 +38,6 @@ class Buttons {
               },
             );
           } else if (usageTitle == "Notificação") {
-            print(audioURL);
-
             //Notifications
             await RingtoneSet.setNotificationFromNetwork(audioURL).then(
               (isSet) {
