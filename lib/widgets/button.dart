@@ -14,13 +14,13 @@ class Buttons {
         backgroundColor: const Color(0xFF000000),
       ),
       onPressed: () async {
-        final directory = await path_provider.getExternalStorageDirectory();
+        final directory = await path_provider.getTemporaryDirectory();
 
         //Download Audio File to App Folder
         Download.audioCustomDirectory(
           context: context,
           audioURL: audioURL,
-          fileDirectory: "${directory!.path}/Bombando/",
+          fileDirectory: "${directory.path}/Audio/",
         );
       },
       child: const Text("Transferir"),
