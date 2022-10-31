@@ -5,3 +5,6 @@ Podes ainda definir qualquer um como:
 - Toque de Chamada.
 - Som de Notificação.
 - Som de Alarme.
+
+## Política de Privacidade
+A `Política de Privacidade` da App pode ser encontrada [aqui](https://github.com/danfq/bombando/blob/main/PRIVACY.md).
