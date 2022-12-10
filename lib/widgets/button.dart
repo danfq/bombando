@@ -1,3 +1,4 @@
+import 'package:bombando/util/audio/audio.dart';
 import 'package:bombando/util/data/web.dart';
 import 'package:bombando/util/notifications/toast.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +23,11 @@ class Buttons {
         if (permissionGranted) {
           if (usageTitle == "Toque de Chamada") {
             //Ringtone
-            await RingtoneSet.setRingtoneFromNetwork(audioURL).then(
+            await RingtoneSet.setRingtoneFromNetwork(
+              "https://www.myinstants.com/${Audio.extractAudioURL(
+                audioHTML: audioURL,
+              )}.mp3",
+            ).then(
               (isSet) {
                 if (isSet) {
                   Toasts.show(
@@ -41,7 +46,11 @@ class Buttons {
             );
           } else if (usageTitle == "Notificação") {
             //Notifications
-            await RingtoneSet.setNotificationFromNetwork(audioURL).then(
+            await RingtoneSet.setNotificationFromNetwork(
+              "https://www.myinstants.com/${Audio.extractAudioURL(
+                audioHTML: audioURL,
+              )}.mp3",
+            ).then(
               (isSet) {
                 if (isSet) {
                   Toasts.show(
@@ -60,7 +69,11 @@ class Buttons {
             );
           } else if (usageTitle == "Alarme") {
             //Alarm
-            await RingtoneSet.setAlarmFromNetwork(audioURL).then(
+            await RingtoneSet.setAlarmFromNetwork(
+              "https://www.myinstants.com/${Audio.extractAudioURL(
+                audioHTML: audioURL,
+              )}.mp3",
+            ).then(
               (isSet) {
                 if (isSet) {
                   Toasts.show(
