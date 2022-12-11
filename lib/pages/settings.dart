@@ -17,7 +17,7 @@ class _SettingsState extends State<Settings> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "Settings",
+          "Definições",
           style: TextStyle(
             letterSpacing: 2.0,
           ),
@@ -31,7 +31,7 @@ class _SettingsState extends State<Settings> {
               physics: const BouncingScrollPhysics(),
               sections: [
                 SettingsSection(
-                  title: const Text("Appearance"),
+                  title: const Text("Visual"),
                   tiles: <SettingsTile>[
                     SettingsTile.switchTile(
                       initialValue: (snapshot.data == AdaptiveThemeMode.light)
@@ -51,8 +51,8 @@ class _SettingsState extends State<Settings> {
                               : const Ikonate(Ikonate.moon),
                       title: Text(
                         (Theme.of(context).brightness == Brightness.light)
-                            ? "Light Mode"
-                            : "Dark Mode",
+                            ? "Modo Claro"
+                            : "Modo Escuro",
                       ),
                     ),
                   ],
