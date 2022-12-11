@@ -24,7 +24,7 @@ class PrettyButtons {
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.black,
           ),
-          child: const Icon(CupertinoIcons.hand_point_right),
+          child: const Icon(CupertinoIcons.square_list),
           onPressed: () {
             AwesomeDialog(
               context: context,

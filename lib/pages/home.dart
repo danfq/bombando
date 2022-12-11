@@ -1,12 +1,13 @@
+import 'package:bombando/pages/settings.dart';
 import 'package:bombando/util/audio/audio.dart';
 import 'package:bombando/util/audio/model.dart';
 import 'package:bombando/util/data/web.dart';
 import 'package:bombando/util/notifications/toast.dart';
 import 'package:bombando/widgets/audio.dart';
-import 'package:bombando/widgets/button.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:icony/icony_ikonate.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -18,29 +19,36 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
-    //Status Bar & Navigation Bar
-    SystemChrome.setSystemUIOverlayStyle(
-      const SystemUiOverlayStyle(
-        systemNavigationBarColor: Color(0xFFFFFFFF),
-        statusBarColor: Color(0xFFFAFAFA),
-      ),
-    );
-
     //App
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xFFFAFAFA),
         title: const Text(
           "Bombando em Portugal",
           style: TextStyle(
-            color: Colors.black,
             letterSpacing: 2.0,
           ),
         ),
-        centerTitle: true,
+        centerTitle: false,
+        actions: [
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                CupertinoPageRoute(
+                  builder: (context) => const Settings(),
+                ),
+              );
+            },
+            child: const Padding(
+              padding: EdgeInsets.only(right: 20.0),
+              child: Ikonate(
+                Ikonate.settings,
+              ),
+            ),
+          ),
+        ],
       ),
-      body: Container(
-        color: const Color(0xFFFFFFFF),
+      body: SafeArea(
         child: FutureBuilder(
           future: Web.audioMap(),
           builder: (context, AsyncSnapshot<Map<int, AudioFile>> snapshot) {
