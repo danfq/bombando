@@ -1,5 +1,8 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:bombando/pages/home.dart';
+import 'package:bombando/pages/team.dart';
 import 'package:bombando/util/theming/controller.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:icony/icony_ikonate.dart';
 import 'package:settings_ui/settings_ui.dart';
@@ -54,6 +57,44 @@ class _SettingsState extends State<Settings> {
                             ? "Modo Claro"
                             : "Modo Escuro",
                       ),
+                    ),
+                  ],
+                ),
+                SettingsSection(
+                  title: const Text("Equipa e Licenças"),
+                  tiles: [
+                    SettingsTile.navigation(
+                      title: const Text("Equipa"),
+                      leading: const Ikonate(Ikonate.people),
+                      onPressed: (context) {
+                        Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                            builder: (context) => const Team(),
+                          ),
+                        );
+                      },
+                    ),
+                    SettingsTile.navigation(
+                      title: const Text("Licenças"),
+                      leading: const Ikonate(Ikonate.lightbulb),
+                      onPressed: (context) {
+                        Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                            builder: (context) => LicensePage(
+                              applicationName: "Bombando",
+                              applicationIcon: Padding(
+                                padding: const EdgeInsets.all(20.0),
+                                child: Image.asset(
+                                  "assets/images/logo.png",
+                                  height: 100.0,
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      },
                     ),
                   ],
                 ),

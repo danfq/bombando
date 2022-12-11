@@ -7,7 +7,7 @@ class Themes {
     return ThemeData.light().copyWith(
       useMaterial3: true,
       appBarTheme: const AppBarTheme(
-        backgroundColor: Color(0xFFFFFEFD),
+        backgroundColor: Color(0xFFFAFAFA),
       ),
       scaffoldBackgroundColor: const Color(0xFFFFFFFF),
       backgroundColor: const Color(0xFFFFFFFF),
@@ -21,8 +21,8 @@ class Themes {
       appBarTheme: const AppBarTheme(
         backgroundColor: Color(0xFF131313),
       ),
-      scaffoldBackgroundColor: const Color(0xFF0D2350),
-      backgroundColor: const Color(0xFF0D2350),
+      scaffoldBackgroundColor: const Color(0xFF121212),
+      backgroundColor: const Color(0xFF121212),
     );
   }
 }
