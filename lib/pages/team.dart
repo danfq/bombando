@@ -46,7 +46,7 @@ class _TeamState extends State<Team> {
                   onPressed: (context) {
                     launchUrl(
                       Uri.parse(
-                        "https://github.com/danfq",
+                        "https://www.instagram.com/nerdyy_pics",
                       ),
                     );
                   },
