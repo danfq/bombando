@@ -5,6 +5,7 @@ import 'package:bombando/util/audio/model.dart';
 import 'package:bombando/util/data/web.dart';
 import 'package:bombando/util/notifications/toast.dart';
 import 'package:bombando/widgets/audio.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -76,35 +77,25 @@ class _HomeState extends State<Home> {
                   snapshot.data != null) {
                 final audioItem = snapshot.data!;
 
-                return ListView.builder(
-                  physics: const BouncingScrollPhysics(),
-                  itemCount: snapshot.data!.length,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: GestureDetector(
-                        onTap: () => {
-                          //Play Audio from URL
-                          Audio.playFromURL(
-                            url: Audio.extractAudioURL(
-                              audioHTML: audioItem[index]!.audioURL,
-                            ),
-                          ),
-
-                          //Notify User
-                          Toasts.show(
-                            context: context,
-                            message: "A Tocar: ${audioItem[index]!.audioName}",
-                          )
-                        },
+                return CarouselSlider(
+                  options: CarouselOptions(
+                    height: double.infinity,
+                    initialPage: 0,
+                    autoPlay: false,
+                    scrollDirection: Axis.horizontal,
+                  ),
+                  items: snapshot.data!.entries.map(
+                    (item) {
+                      return Padding(
+                        padding: const EdgeInsets.all(10.0),
                         child: PrettyButtons.audio(
                           context: context,
-                          name: audioItem[index]!.audioName,
-                          url: audioItem[index]!.audioURL,
+                          name: item.value.audioName,
+                          url: item.value.audioURL,
                         ),
-                      ),
-                    );
-                  },
+                      );
+                    },
+                  ).toList(),
                 );
               } else {
                 return const Center(

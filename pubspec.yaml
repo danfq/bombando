@@ -30,6 +30,7 @@ dependencies:
   icony: ^1.0.5
   settings_ui: ^2.0.2
   url_launcher: ^6.1.7
+  carousel_slider: ^4.2.1
 
 dev_dependencies:
   flutter_test:
