@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:bombando/pages/settings.dart';
 import 'package:bombando/util/audio/audio.dart';
 import 'package:bombando/util/audio/model.dart';
@@ -20,78 +21,98 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     //App
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          "Bombando em Portugal",
-          style: TextStyle(
-            letterSpacing: 2.0,
+    return WillPopScope(
+      onWillPop: () async {
+        AwesomeDialog(
+          context: context,
+          desc: "Tens a certeza que queres sair?",
+          btnOk: ElevatedButton(
+            onPressed: () => SystemNavigator.pop(),
+            child: const Text("Sair"),
           ),
-        ),
-        centerTitle: false,
-        actions: [
-          GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                CupertinoPageRoute(
-                  builder: (context) => const Settings(),
-                ),
-              );
-            },
-            child: const Padding(
-              padding: EdgeInsets.only(right: 20.0),
-              child: Ikonate(
-                Ikonate.settings,
-              ),
+          btnCancel: ElevatedButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text("Cancelar"),
+          ),
+          dialogType: DialogType.question,
+        ).show();
+
+        //Prevent Exit
+        return false;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text(
+            "Bombando em Portugal",
+            style: TextStyle(
+              letterSpacing: 2.0,
             ),
           ),
-        ],
-      ),
-      body: SafeArea(
-        child: FutureBuilder(
-          future: Web.audioMap(),
-          builder: (context, AsyncSnapshot<Map<int, AudioFile>> snapshot) {
-            if (snapshot.connectionState == ConnectionState.done &&
-                snapshot.data != null) {
-              final audioItem = snapshot.data!;
+          centerTitle: false,
+          actions: [
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  CupertinoPageRoute(
+                    builder: (context) => const Settings(),
+                  ),
+                );
+              },
+              child: const Padding(
+                padding: EdgeInsets.only(right: 20.0),
+                child: Ikonate(
+                  Ikonate.settings,
+                ),
+              ),
+            ),
+          ],
+        ),
+        body: SafeArea(
+          child: FutureBuilder(
+            future: Web.audioMap(),
+            builder: (context, AsyncSnapshot<Map<int, AudioFile>> snapshot) {
+              if (snapshot.connectionState == ConnectionState.done &&
+                  snapshot.data != null) {
+                final audioItem = snapshot.data!;
 
-              return ListView.builder(
-                physics: const BouncingScrollPhysics(),
-                itemCount: snapshot.data!.length,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: GestureDetector(
-                      onTap: () => {
-                        //Play Audio from URL
-                        Audio.playFromURL(
-                          url: Audio.extractAudioURL(
-                            audioHTML: audioItem[index]!.audioURL,
+                return ListView.builder(
+                  physics: const BouncingScrollPhysics(),
+                  itemCount: snapshot.data!.length,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: GestureDetector(
+                        onTap: () => {
+                          //Play Audio from URL
+                          Audio.playFromURL(
+                            url: Audio.extractAudioURL(
+                              audioHTML: audioItem[index]!.audioURL,
+                            ),
                           ),
-                        ),
 
-                        //Notify User
-                        Toasts.show(
+                          //Notify User
+                          Toasts.show(
+                            context: context,
+                            message: "A Tocar: ${audioItem[index]!.audioName}",
+                          )
+                        },
+                        child: PrettyButtons.audio(
                           context: context,
-                          message: "A Tocar: ${audioItem[index]!.audioName}",
-                        )
-                      },
-                      child: PrettyButtons.audio(
-                        context: context,
-                        name: audioItem[index]!.audioName,
-                        url: audioItem[index]!.audioURL,
+                          name: audioItem[index]!.audioName,
+                          url: audioItem[index]!.audioURL,
+                        ),
                       ),
-                    ),
-                  );
-                },
-              );
-            } else {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-          },
+                    );
+                  },
+                );
+              } else {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+            },
+          ),
         ),
       ),
     );
