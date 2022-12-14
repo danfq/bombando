@@ -87,7 +87,12 @@ class _HomeState extends State<Home> {
                   items: snapshot.data!.entries.map(
                     (item) {
                       return Padding(
-                        padding: const EdgeInsets.all(10.0),
+                        padding: const EdgeInsets.fromLTRB(
+                          10.0,
+                          20.0,
+                          10.0,
+                          20.0,
+                        ),
                         child: PrettyButtons.audio(
                           context: context,
                           name: item.value.audioName,

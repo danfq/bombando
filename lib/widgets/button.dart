@@ -14,9 +14,6 @@ class Buttons {
     required String usageTitle,
   }) {
     return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        backgroundColor: const Color(0xFF000000),
-      ),
       onPressed: () async {
         bool permissionGranted = true;
 

@@ -11,6 +11,9 @@ class Themes {
       ),
       scaffoldBackgroundColor: const Color(0xFFFFFFFF),
       backgroundColor: const Color(0xFFFFFFFF),
+      buttonTheme: const ButtonThemeData(
+        buttonColor: Color(0xFFE4E5E6),
+      ),
     );
   }
 
@@ -23,6 +26,9 @@ class Themes {
       ),
       scaffoldBackgroundColor: const Color(0xFF121212),
       backgroundColor: const Color(0xFF121212),
+      buttonTheme: const ButtonThemeData(
+        buttonColor: Color(0xFF4E4376),
+      ),
     );
   }
 }

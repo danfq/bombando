@@ -58,6 +58,11 @@ class _SettingsState extends State<Settings> {
                             : "Modo Escuro",
                       ),
                     ),
+                    SettingsTile.navigation(
+                      onPressed: (context) {},
+                      leading: const Ikonate(Ikonate.swap_vertical),
+                      title: const Text("Orientação"),
+                    ),
                   ],
                 ),
                 SettingsSection(
@@ -87,7 +92,7 @@ class _SettingsState extends State<Settings> {
                               applicationIcon: Padding(
                                 padding: const EdgeInsets.all(20.0),
                                 child: Image.asset(
-                                  "assets/images/logo.png",
+                                  "assets/images/logo_no_background.png",
                                   height: 100.0,
                                 ),
                               ),
