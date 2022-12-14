@@ -1,4 +1,5 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:bombando/pages/home.dart';
 import 'package:bombando/pages/team.dart';
 import 'package:bombando/util/theming/controller.dart';
@@ -59,7 +60,40 @@ class _SettingsState extends State<Settings> {
                       ),
                     ),
                     SettingsTile.navigation(
-                      onPressed: (context) {},
+                      onPressed: (context) {
+                        AwesomeDialog(
+                          context: context,
+                          title: "Orientação",
+                          dialogType: DialogType.noHeader,
+                          body: Padding(
+                            padding: const EdgeInsets.all(20.0),
+                            child: Column(
+                              children: [
+                                const Text(
+                                  "Escolhe a Orientação em que queres que a página principal se apresente:",
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(20.0),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      ElevatedButton(
+                                        onPressed: () {},
+                                        child: const Text("Vertical"),
+                                      ),
+                                      ElevatedButton(
+                                        onPressed: () {},
+                                        child: const Text("Horizontal"),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ).show();
+                      },
                       leading: const Ikonate(Ikonate.swap_vertical),
                       title: const Text("Orientação"),
                     ),
