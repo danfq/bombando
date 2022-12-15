@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 ///Themes
 class Themes {
-  ///Light Mode
+  ///Light Mode - MDDM Palette
   static ThemeData light() {
     return ThemeData.light().copyWith(
       useMaterial3: true,
@@ -17,7 +17,7 @@ class Themes {
     );
   }
 
-  ///Dark Mode
+  ///Dark Mode - MDDM Palette
   static ThemeData dark() {
     return ThemeData.dark().copyWith(
       useMaterial3: true,

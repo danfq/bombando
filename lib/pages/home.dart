@@ -1,9 +1,8 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:bombando/pages/settings.dart';
-import 'package:bombando/util/audio/audio.dart';
 import 'package:bombando/util/audio/model.dart';
+import 'package:bombando/util/data/local.dart';
 import 'package:bombando/util/data/web.dart';
-import 'package:bombando/util/notifications/toast.dart';
 import 'package:bombando/widgets/audio.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
@@ -21,6 +20,23 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
+    //Current Feed Orientation
+    String? currentOrientation = LocalData.retrieveData(
+      context: context,
+      box: "preferences",
+      itemID: "orientation",
+    );
+
+    Axis parseOrientation({required String orientation}) {
+      if (orientation == "vertical") {
+        return Axis.vertical;
+      } else if (orientation == "horizontal") {
+        return Axis.horizontal;
+      } else {
+        return Axis.horizontal;
+      }
+    }
+
     //App
     return WillPopScope(
       onWillPop: () async {
@@ -53,10 +69,24 @@ class _HomeState extends State<Home> {
           actions: [
             GestureDetector(
               onTap: () {
+                Navigator.pop(context);
+
                 Navigator.push(
                   context,
                   CupertinoPageRoute(
-                    builder: (context) => const Settings(),
+                    builder: (context) => WillPopScope(
+                      onWillPop: () async {
+                        Navigator.pushReplacement(
+                          context,
+                          CupertinoPageRoute(
+                            builder: (context) => const Home(),
+                          ),
+                        );
+
+                        return false;
+                      },
+                      child: const Settings(),
+                    ),
                   ),
                 );
               },
@@ -82,9 +112,11 @@ class _HomeState extends State<Home> {
                     height: double.infinity,
                     initialPage: 0,
                     autoPlay: false,
-                    scrollDirection: Axis.horizontal,
+                    scrollDirection: parseOrientation(
+                      orientation: currentOrientation ?? "vertical",
+                    ),
                   ),
-                  items: snapshot.data!.entries.map(
+                  items: audioItem.entries.map(
                     (item) {
                       return Padding(
                         padding: const EdgeInsets.fromLTRB(

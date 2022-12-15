@@ -1,17 +1,16 @@
+import 'package:fl_toast/fl_toast.dart';
 import 'package:flutter/material.dart';
 
 ///Toasts
 class Toasts {
   ///Show with Custom Message
-  static void show({
+  static Future<void> show({
     required BuildContext context,
     required String message,
-  }) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        duration: const Duration(seconds: 1),
-      ),
+  }) async {
+    await showPlatformToast(
+      context: context,
+      child: Text(message),
     );
   }
 }

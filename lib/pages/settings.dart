@@ -1,7 +1,8 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:bombando/pages/home.dart';
 import 'package:bombando/pages/team.dart';
+import 'package:bombando/util/data/local.dart';
+import 'package:bombando/util/notifications/toast.dart';
 import 'package:bombando/util/theming/controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -79,11 +80,49 @@ class _SettingsState extends State<Settings> {
                                         MainAxisAlignment.spaceEvenly,
                                     children: [
                                       ElevatedButton(
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          //Set Vertical Orientation
+                                          setState(() {
+                                            LocalData.saveData(
+                                              context: context,
+                                              box: "preferences",
+                                              data: {
+                                                "orientation": "vertical",
+                                              },
+                                            );
+                                          });
+
+                                          Navigator.pop(context);
+
+                                          //Notify User
+                                          Toasts.show(
+                                            context: context,
+                                            message: "Orientação: Vertical",
+                                          );
+                                        },
                                         child: const Text("Vertical"),
                                       ),
                                       ElevatedButton(
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          //Set Horizontal Orientation
+                                          setState(() {
+                                            LocalData.saveData(
+                                              context: context,
+                                              box: "preferences",
+                                              data: {
+                                                "orientation": "horizontal",
+                                              },
+                                            );
+                                          });
+
+                                          Navigator.pop(context);
+
+                                          //Notify User
+                                          Toasts.show(
+                                            context: context,
+                                            message: "Orientação: Horizontal",
+                                          );
+                                        },
                                         child: const Text("Horizontal"),
                                       ),
                                     ],
