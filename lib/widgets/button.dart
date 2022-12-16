@@ -3,7 +3,6 @@ import 'package:bombando/util/data/web.dart';
 import 'package:bombando/util/notifications/toast.dart';
 import 'package:bombando/util/permissions/permissions_management.dart';
 import 'package:flutter/material.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:ringtone_set/ringtone_set.dart';
 
 ///Buttons

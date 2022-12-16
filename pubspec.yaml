@@ -34,6 +34,7 @@ dependencies:
   hive: ^2.2.3
   hive_flutter: ^1.1.0
   fl_toast: ^3.1.0
+  share_plus: ^6.3.0
 
 dev_dependencies:
   flutter_test:
