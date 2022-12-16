@@ -35,6 +35,7 @@ class PrettyButtons {
                   child: Image.asset(
                     "assets/images/audio_background.png",
                     height: double.infinity,
+                    width: double.infinity,
                     fit: BoxFit.cover,
                   ),
                 ),
