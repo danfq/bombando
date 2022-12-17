@@ -24,8 +24,8 @@ class Themes {
       appBarTheme: const AppBarTheme(
         backgroundColor: Color(0xFF131313),
       ),
-      scaffoldBackgroundColor: const Color(0xFF121212),
-      backgroundColor: const Color(0xFF121212),
+      scaffoldBackgroundColor: const Color(0xFF252525),
+      backgroundColor: const Color(0xFF252525),
       buttonTheme: const ButtonThemeData(
         buttonColor: Color(0xFF4E4376),
       ),

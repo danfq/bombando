@@ -97,6 +97,8 @@ class _SettingsState extends State<Settings> {
                                           //Notify User
                                           Toasts.show(
                                             context: context,
+                                            toastType: ToastType.success,
+                                            title: "Feito!",
                                             message: "Orientação: Vertical",
                                           );
                                         },
@@ -120,6 +122,8 @@ class _SettingsState extends State<Settings> {
                                           //Notify User
                                           Toasts.show(
                                             context: context,
+                                            toastType: ToastType.success,
+                                            title: "Feito!",
                                             message: "Orientação: Horizontal",
                                           );
                                         },

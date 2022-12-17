@@ -43,6 +43,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.2"
+  awesome_notifications:
+    dependency: "direct main"
+    description:
+      name: awesome_notifications
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.7.4+1"
   boolean_selector:
     dependency: transitive
     description:
@@ -113,6 +120,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.0.6"
+  elegant_notification:
+    dependency: "direct main"
+    description:
+      name: elegant_notification
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.6.4"
   fake_async:
     dependency: transitive
     description:
@@ -134,13 +148,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "6.1.4"
-  fl_toast:
-    dependency: "direct main"
-    description:
-      name: fl_toast
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "3.1.0"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -254,6 +261,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.2.2"
+  intl:
+    dependency: transitive
+    description:
+      name: intl
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.17.0"
   js:
     dependency: transitive
     description:

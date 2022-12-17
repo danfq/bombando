@@ -33,8 +33,9 @@ dependencies:
   carousel_slider: ^4.2.1
   hive: ^2.2.3
   hive_flutter: ^1.1.0
-  fl_toast: ^3.1.0
   share_plus: ^6.3.0
+  awesome_notifications: ^0.7.4+1
+  elegant_notification: ^1.6.4
 
 dev_dependencies:
   flutter_test:
@@ -67,7 +68,9 @@ icons_launcher:
 flutter_native_splash:
 
   color: "#ffffff"
+  color_dark: "#252525"
 
   android_12:
  
-    branding: assets/images/logo.png
+    image: assets/images/logo_no_background.png
+    image_dark: assets/images/logo_no_background_dark.png

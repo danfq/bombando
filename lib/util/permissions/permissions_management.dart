@@ -24,6 +24,8 @@ class PermissionsManagement {
       //Notify User
       Toasts.show(
         context: context,
+        toastType: ToastType.error,
+        title: "Erro",
         message: error.message ?? "An Error Has Occurred",
       );
     }

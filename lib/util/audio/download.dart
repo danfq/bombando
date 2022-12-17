@@ -44,6 +44,8 @@ class Download {
     } catch (error) {
       Toasts.show(
         context: context,
+        toastType: ToastType.error,
+        title: "Erro",
         message: error.toString(),
       );
     }

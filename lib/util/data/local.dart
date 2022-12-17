@@ -55,6 +55,8 @@ class LocalData {
         //Notify User
         Toasts.show(
           context: context,
+          toastType: ToastType.error,
+          title: "Erro",
           message: error.message,
         );
       }
@@ -80,6 +82,8 @@ class LocalData {
         //Notify User
         Toasts.show(
           context: context,
+          toastType: ToastType.error,
+          title: "Erro",
           message: error.message,
         );
       }

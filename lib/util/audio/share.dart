@@ -29,7 +29,12 @@ class ShareAudio {
       await Share.shareFiles([file.path], text: audioName);
     } else {
       //Invalid or Null File
-      Toasts.show(context: context, message: "Erro ao Partilhar");
+      Toasts.show(
+        context: context,
+        toastType: ToastType.error,
+        title: "Erro",
+        message: "Erro ao Partilhar",
+      );
     }
   }
 }
