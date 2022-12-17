@@ -1,6 +1,7 @@
 import 'package:bombando/util/audio/model.dart';
 import 'package:html/parser.dart';
 import 'package:http/http.dart' as http;
+import 'package:url_launcher/url_launcher.dart';
 
 ///Web Data from MyInstants Website
 class Web {
@@ -52,5 +53,18 @@ class Web {
     }
 
     return audioMap;
+  }
+}
+
+///URLs
+class URLs {
+  ///Launch External URL
+  static void launch({
+    required String url,
+  }) {
+    launchUrl(
+      Uri.parse(url),
+      mode: LaunchMode.externalApplication,
+    );
   }
 }

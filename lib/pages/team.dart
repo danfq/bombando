@@ -1,3 +1,4 @@
+import 'package:bombando/util/data/web.dart';
 import 'package:flutter/material.dart';
 import 'package:icony/icony_ikonate.dart';
 import 'package:settings_ui/settings_ui.dart';
@@ -28,11 +29,7 @@ class _TeamState extends State<Team> {
                   leading: const Ikonate(Ikonate.code),
                   title: const Text("DanFQ"),
                   onPressed: (context) {
-                    launchUrl(
-                      Uri.parse(
-                        "https://github.com/danfq",
-                      ),
-                    );
+                    URLs.launch(url: "https://github.com/danfq");
                   },
                 ),
               ],
@@ -44,11 +41,7 @@ class _TeamState extends State<Team> {
                   leading: const Ikonate(Ikonate.pen),
                   title: const Text("VEIGA"),
                   onPressed: (context) {
-                    launchUrl(
-                      Uri.parse(
-                        "https://www.instagram.com/nerdyy_pics",
-                      ),
-                    );
+                    URLs.launch(url: "https://www.instagram.com/nerdyy_pics");
                   },
                 ),
               ],
@@ -60,11 +53,7 @@ class _TeamState extends State<Team> {
                   leading: const Ikonate(Ikonate.trending_up),
                   title: const Text("MatiFF"),
                   onPressed: (context) {
-                    launchUrl(
-                      Uri.parse(
-                        "https://www.instagram.com/tide_ff",
-                      ),
-                    );
+                    URLs.launch(url: "https://www.instagram.com/tide_ff");
                   },
                 ),
               ],
