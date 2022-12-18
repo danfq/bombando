@@ -34,7 +34,6 @@ dependencies:
   hive: ^2.2.3
   hive_flutter: ^1.1.0
   share_plus: ^6.3.0
-  awesome_notifications: ^0.7.4+1
   elegant_notification: ^1.6.4
 
 dev_dependencies:

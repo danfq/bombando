@@ -35,7 +35,7 @@ class LocalData {
   static Future<void> saveData({
     required BuildContext context,
     required String box,
-    required Map<String, String> data,
+    required Map<String, dynamic> data,
   }) async {
     //Check if Box is Open
     if (Hive.isBoxOpen(box)) {

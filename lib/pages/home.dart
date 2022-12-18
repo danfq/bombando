@@ -20,6 +20,29 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
+    //Carousel Controller
+    CarouselController carouselController = CarouselController();
+
+    //Infinite Scroll
+    bool? infiniteScroll = LocalData.retrieveData(
+      context: context,
+      box: "preferences",
+      itemID: "infinite_scroll",
+    );
+
+    Widget backToBeginning() {
+      return Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Container(
+          width: double.infinity,
+          child: ElevatedButton(
+            onPressed: () => carouselController.animateToPage(0),
+            child: const Text("Voltar ao Início"),
+          ),
+        ),
+      );
+    }
+
     //Current Feed Orientation
     String? currentOrientation = LocalData.retrieveData(
       context: context,
@@ -107,32 +130,49 @@ class _HomeState extends State<Home> {
                   snapshot.data != null) {
                 final audioItem = snapshot.data!;
 
-                return CarouselSlider(
-                  options: CarouselOptions(
-                    height: double.infinity,
-                    initialPage: 0,
-                    autoPlay: false,
-                    scrollDirection: parseOrientation(
-                      orientation: currentOrientation ?? "vertical",
+                return Column(
+                  children: [
+                    Expanded(
+                      child: CarouselSlider(
+                        carouselController: carouselController,
+                        options: CarouselOptions(
+                          scrollPhysics: const BouncingScrollPhysics(),
+                          height: double.infinity,
+                          initialPage: 0,
+                          autoPlay: false,
+                          enableInfiniteScroll: infiniteScroll ?? false,
+                          scrollDirection: parseOrientation(
+                            orientation: currentOrientation ?? "vertical",
+                          ),
+                        ),
+                        items: audioItem.entries.map(
+                          (item) {
+                            return Padding(
+                              padding: const EdgeInsets.fromLTRB(
+                                10.0,
+                                20.0,
+                                10.0,
+                                20.0,
+                              ),
+                              child: PrettyButtons.audio(
+                                context: context,
+                                name: item.value.audioName,
+                                url: item.value.audioURL,
+                              ),
+                            );
+                          },
+                        ).toList(),
+                      ),
                     ),
-                  ),
-                  items: audioItem.entries.map(
-                    (item) {
-                      return Padding(
-                        padding: const EdgeInsets.fromLTRB(
-                          10.0,
-                          20.0,
-                          10.0,
-                          20.0,
-                        ),
-                        child: PrettyButtons.audio(
-                          context: context,
-                          name: item.value.audioName,
-                          url: item.value.audioURL,
-                        ),
-                      );
-                    },
-                  ).toList(),
+                    (LocalData.retrieveData(
+                              context: context,
+                              box: "preferences",
+                              itemID: "infinite_scroll",
+                            ) ==
+                            true)
+                        ? Container()
+                        : backToBeginning(),
+                  ],
                 );
               } else {
                 return const Center(

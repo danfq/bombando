@@ -140,6 +140,27 @@ class _SettingsState extends State<Settings> {
                       leading: const Ikonate(Ikonate.swap_vertical),
                       title: const Text("Orientação"),
                     ),
+                    SettingsTile.switchTile(
+                      initialValue: (LocalData.retrieveData(
+                            context: context,
+                            box: "preferences",
+                            itemID: "infinite_scroll",
+                          )) ??
+                          false,
+                      onToggle: (mode) {
+                        setState(() {
+                          LocalData.saveData(
+                            context: context,
+                            box: "preferences",
+                            data: {
+                              "infinite_scroll": mode,
+                            },
+                          );
+                        });
+                      },
+                      leading: const Ikonate(Ikonate.arrow_down_circle),
+                      title: const Text("Lista Infinita"),
+                    ),
                   ],
                 ),
                 SettingsSection(
