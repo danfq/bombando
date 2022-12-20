@@ -1,5 +1,5 @@
 # Transfere Já!
-A partir de agora, a "Bombando" encontra-se disponível na [Play Store](https://play.google.com/store/apps/details?id=io.github.danfq.bombando)!
+A partir de agora, a "Bombando" encontra-se disponível na [Play Store](https://play.google.com/store/apps/details?id=io.github.danfq.bombandopt)!
 
 ## Bombando
 A "Bombando" permite que tenhas, no teu bolso, os Memes mais conhecidos de Portugal!
