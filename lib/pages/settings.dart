@@ -1,5 +1,6 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:bombando/pages/home.dart';
 import 'package:bombando/pages/team.dart';
 import 'package:bombando/util/data/local.dart';
 import 'package:bombando/util/notifications/toast.dart';
@@ -27,6 +28,24 @@ class _SettingsState extends State<Settings> {
             letterSpacing: 2.0,
           ),
         ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context);
+
+                Navigator.push(
+                  context,
+                  CupertinoPageRoute(
+                    builder: (context) => const Home(),
+                  ),
+                );
+              },
+              child: const Text("Concluído"),
+            ),
+          ),
+        ],
       ),
       body: SafeArea(
         child: FutureBuilder(
