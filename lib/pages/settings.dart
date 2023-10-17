@@ -7,6 +7,7 @@ import 'package:bombando/util/notifications/toast.dart';
 import 'package:bombando/util/theming/controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:icony/icony_ikonate.dart';
 import 'package:settings_ui/settings_ui.dart';
 
@@ -28,24 +29,6 @@ class _SettingsState extends State<Settings> {
             letterSpacing: 2.0,
           ),
         ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: ElevatedButton(
-              onPressed: () {
-                Navigator.pop(context);
-
-                Navigator.push(
-                  context,
-                  CupertinoPageRoute(
-                    builder: (context) => const Home(),
-                  ),
-                );
-              },
-              child: const Text("Concluído"),
-            ),
-          ),
-        ],
       ),
       body: SafeArea(
         child: FutureBuilder(
@@ -53,6 +36,14 @@ class _SettingsState extends State<Settings> {
           builder: (context, snapshot) {
             return SettingsList(
               physics: const BouncingScrollPhysics(),
+              lightTheme: SettingsThemeData(
+                settingsListBackground:
+                    Theme.of(context).scaffoldBackgroundColor,
+              ),
+              darkTheme: SettingsThemeData(
+                settingsListBackground:
+                    Theme.of(context).scaffoldBackgroundColor,
+              ),
               sections: [
                 SettingsSection(
                   title: const Text("Visual"),
@@ -71,8 +62,8 @@ class _SettingsState extends State<Settings> {
                       },
                       leading:
                           (Theme.of(context).brightness == Brightness.light)
-                              ? const Ikonate(Ikonate.sun)
-                              : const Ikonate(Ikonate.moon),
+                              ? const Icon(Ionicons.ios_sunny)
+                              : const Icon(Ionicons.ios_moon),
                       title: Text(
                         (Theme.of(context).brightness == Brightness.light)
                             ? "Modo Claro"
@@ -80,86 +71,96 @@ class _SettingsState extends State<Settings> {
                       ),
                     ),
                     SettingsTile.navigation(
+                      leading: const Icon(Ionicons.swap_vertical),
+                      title: const Text("Orientação"),
                       onPressed: (context) {
-                        AwesomeDialog(
+                        showAdaptiveDialog(
                           context: context,
-                          title: "Orientação",
-                          dialogType: DialogType.noHeader,
-                          body: Padding(
-                            padding: const EdgeInsets.all(20.0),
-                            child: Column(
-                              children: [
-                                const Text(
-                                  "Escolhe a Orientação em que queres que a página principal se apresente:",
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(20.0),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      ElevatedButton(
-                                        onPressed: () {
-                                          //Set Vertical Orientation
-                                          setState(() {
-                                            LocalData.saveData(
+                          barrierDismissible: true,
+                          builder: (context) {
+                            return Dialog(
+                              backgroundColor:
+                                  Theme.of(context).scaffoldBackgroundColor,
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  const Padding(
+                                    padding: EdgeInsets.all(20.0),
+                                    child: Text(
+                                      "Orientação da Lista de Memes",
+                                      style: TextStyle(fontSize: 18.0),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(20.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        ElevatedButton(
+                                          onPressed: () async {
+                                            await LocalData.saveData(
                                               context: context,
                                               box: "preferences",
                                               data: {
                                                 "orientation": "vertical",
                                               },
                                             );
-                                          });
 
-                                          Navigator.pop(context);
+                                            //Notify User
+                                            if (mounted) {
+                                              Navigator.pop(context);
 
-                                          //Notify User
-                                          Toasts.show(
-                                            context: context,
-                                            toastType: ToastType.success,
-                                            title: "Feito!",
-                                            message: "Orientação: Vertical",
-                                          );
-                                        },
-                                        child: const Text("Vertical"),
-                                      ),
-                                      ElevatedButton(
-                                        onPressed: () {
-                                          //Set Horizontal Orientation
-                                          setState(() {
-                                            LocalData.saveData(
+                                              Toasts.show(
+                                                context: context,
+                                                toastType: ToastType.success,
+                                                title: "Feito!",
+                                                message: "Orientação: Vertical",
+                                              );
+                                            }
+                                          },
+                                          child: const Text("Vertical"),
+                                        ),
+                                        ElevatedButton(
+                                          onPressed: () async {
+                                            await LocalData.saveData(
                                               context: context,
                                               box: "preferences",
                                               data: {
                                                 "orientation": "horizontal",
                                               },
                                             );
-                                          });
 
-                                          Navigator.pop(context);
+                                            //Notify User
+                                            if (mounted) {
+                                              Navigator.pop(context);
 
-                                          //Notify User
-                                          Toasts.show(
-                                            context: context,
-                                            toastType: ToastType.success,
-                                            title: "Feito!",
-                                            message: "Orientação: Horizontal",
-                                          );
-                                        },
-                                        child: const Text("Horizontal"),
-                                      ),
-                                    ],
+                                              Toasts.show(
+                                                context: context,
+                                                toastType: ToastType.success,
+                                                title: "Feito!",
+                                                message:
+                                                    "Orientação: Horizontal",
+                                              );
+                                            }
+                                          },
+                                          child: const Text("Horizontal"),
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ).show();
+                                ],
+                              ),
+                            );
+                          },
+                        );
                       },
-                      leading: const Ikonate(Ikonate.swap_vertical),
-                      title: const Text("Orientação"),
                     ),
                     SettingsTile.switchTile(
+                      leading: const Icon(
+                        Ionicons.ios_arrow_down_circle_outline,
+                      ),
+                      title: const Text("Lista Infinita"),
                       initialValue: (LocalData.retrieveData(
                             context: context,
                             box: "preferences",
@@ -177,8 +178,6 @@ class _SettingsState extends State<Settings> {
                           );
                         });
                       },
-                      leading: const Ikonate(Ikonate.arrow_down_circle),
-                      title: const Text("Lista Infinita"),
                     ),
                   ],
                 ),
@@ -187,7 +186,7 @@ class _SettingsState extends State<Settings> {
                   tiles: [
                     SettingsTile.navigation(
                       title: const Text("Equipa"),
-                      leading: const Ikonate(Ikonate.people),
+                      leading: const Icon(Ionicons.ios_people),
                       onPressed: (context) {
                         Navigator.push(
                           context,
@@ -199,7 +198,7 @@ class _SettingsState extends State<Settings> {
                     ),
                     SettingsTile.navigation(
                       title: const Text("Licenças"),
-                      leading: const Ikonate(Ikonate.lightbulb),
+                      leading: const Icon(Ionicons.ios_document_outline),
                       onPressed: (context) {
                         Navigator.push(
                           context,

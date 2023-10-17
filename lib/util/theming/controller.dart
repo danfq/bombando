@@ -33,7 +33,6 @@ class ThemeController {
     AdaptiveTheme.of(context).toggleThemeMode();
   }
 
-  //StatusBar & NavBar
   //Status Bar & Navigation Bar
   static void statusAndNav({required AdaptiveThemeMode mode}) {
     if (mode == AdaptiveThemeMode.light) {

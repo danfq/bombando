@@ -1,9 +1,9 @@
-import 'package:bombando/util/audio/audio.dart';
 import 'package:bombando/util/data/web.dart';
 import 'package:bombando/util/notifications/toast.dart';
 import 'package:bombando/util/permissions/permissions_management.dart';
 import 'package:flutter/material.dart';
 import 'package:ringtone_set/ringtone_set.dart';
+import 'package:bombando/util/audio/manager.dart';
 
 ///Buttons
 class Buttons {
@@ -24,7 +24,7 @@ class Buttons {
           if (usageTitle == "Toque de Chamada") {
             //Ringtone
             await RingtoneSet.setRingtoneFromNetwork(
-              "https://www.myinstants.com/${Audio.extractAudioURL(
+              "https://www.myinstants.com/${AudioPlayerManager.extractAudioURL(
                 audioHTML: audioURL,
               )}.mp3",
             ).then(
@@ -51,7 +51,7 @@ class Buttons {
           } else if (usageTitle == "Notificação") {
             //Notifications
             await RingtoneSet.setNotificationFromNetwork(
-              "https://www.myinstants.com/${Audio.extractAudioURL(
+              "https://www.myinstants.com/${AudioPlayerManager.extractAudioURL(
                 audioHTML: audioURL,
               )}.mp3",
             ).then(
@@ -78,7 +78,7 @@ class Buttons {
           } else if (usageTitle == "Alarme") {
             //Alarm
             await RingtoneSet.setAlarmFromNetwork(
-              "https://www.myinstants.com/${Audio.extractAudioURL(
+              "https://www.myinstants.com/${AudioPlayerManager.extractAudioURL(
                 audioHTML: audioURL,
               )}.mp3",
             ).then(

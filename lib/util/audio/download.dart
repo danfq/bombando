@@ -49,5 +49,6 @@ class Download {
         message: error.toString(),
       );
     }
+    return null;
   }
 }

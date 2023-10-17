@@ -35,6 +35,10 @@ dependencies:
   hive_flutter: ^1.1.0
   share_plus: ^6.3.0
   elegant_notification: ^1.6.4
+  google_fonts: ^4.0.4
+  flutter_vector_icons: ^2.0.0
+  mini_music_visualizer: ^1.0.2
+  audioplayers: ^5.2.0
 
 dev_dependencies:
   flutter_test:
@@ -63,7 +67,7 @@ icons_launcher:
     linux:
       enable: true
 
-#Splash Screen
+# Splash Screen
 flutter_native_splash:
 
   color: "#ffffff"

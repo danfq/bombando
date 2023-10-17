@@ -1,8 +1,8 @@
 import 'package:bombando/util/data/web.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:icony/icony_ikonate.dart';
 import 'package:settings_ui/settings_ui.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class Team extends StatefulWidget {
   const Team({super.key});
@@ -21,12 +21,18 @@ class _TeamState extends State<Team> {
       body: SafeArea(
         child: SettingsList(
           physics: const BouncingScrollPhysics(),
+          lightTheme: SettingsThemeData(
+            settingsListBackground: Theme.of(context).scaffoldBackgroundColor,
+          ),
+          darkTheme: SettingsThemeData(
+            settingsListBackground: Theme.of(context).scaffoldBackgroundColor,
+          ),
           sections: [
             SettingsSection(
               title: const Text("Programadores"),
               tiles: [
                 SettingsTile.navigation(
-                  leading: const Ikonate(Ikonate.code),
+                  leading: const Icon(Ionicons.ios_code),
                   title: const Text("DanFQ"),
                   onPressed: (context) {
                     URLs.launch(url: "https://github.com/danfq");
@@ -38,10 +44,10 @@ class _TeamState extends State<Team> {
               title: const Text("Design"),
               tiles: [
                 SettingsTile.navigation(
-                  leading: const Ikonate(Ikonate.pen),
+                  leading: const Icon(Ionicons.ios_brush),
                   title: const Text("VEIGA"),
                   onPressed: (context) {
-                    URLs.launch(url: "https://www.instagram.com/nerdyy_pics");
+                    URLs.launch(url: "https://www.instagram.com/veigadesigns");
                   },
                 ),
               ],
@@ -50,7 +56,7 @@ class _TeamState extends State<Team> {
               title: const Text("Testes de Qualidade"),
               tiles: [
                 SettingsTile.navigation(
-                  leading: const Ikonate(Ikonate.trending_up),
+                  leading: const Icon(MaterialCommunityIcons.test_tube),
                   title: const Text("MatiFF"),
                   onPressed: (context) {
                     URLs.launch(url: "https://www.instagram.com/tide_ff");

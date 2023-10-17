@@ -8,6 +8,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:icony/icony_ikonate.dart';
 
 class Home extends StatefulWidget {
@@ -25,23 +26,11 @@ class _HomeState extends State<Home> {
 
     //Infinite Scroll
     bool? infiniteScroll = LocalData.retrieveData(
-      context: context,
-      box: "preferences",
-      itemID: "infinite_scroll",
-    );
-
-    Widget backToBeginning() {
-      return Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Container(
-          width: double.infinity,
-          child: ElevatedButton(
-            onPressed: () => carouselController.animateToPage(0),
-            child: const Text("Voltar ao Início"),
-          ),
-        ),
-      );
-    }
+          context: context,
+          box: "preferences",
+          itemID: "infinite_scroll",
+        ) ??
+        false;
 
     //Current Feed Orientation
     String? currentOrientation = LocalData.retrieveData(
@@ -83,42 +72,33 @@ class _HomeState extends State<Home> {
       child: Scaffold(
         appBar: AppBar(
           title: const Text(
-            "Bombando em Portugal",
+            "Bombando",
             style: TextStyle(
               letterSpacing: 2.0,
             ),
           ),
           centerTitle: false,
           actions: [
-            GestureDetector(
-              onTap: () {
-                Navigator.pop(context);
-
-                Navigator.push(
+            infiniteScroll == false
+                ? IconButton(
+                    onPressed: () async {
+                      await carouselController.animateToPage(0);
+                    },
+                    tooltip: "Voltar ao Início",
+                    icon: const Icon(Ionicons.return_up_back),
+                  )
+                : Container(),
+            IconButton(
+              onPressed: () async {
+                await Navigator.push(
                   context,
                   CupertinoPageRoute(
-                    builder: (context) => WillPopScope(
-                      onWillPop: () async {
-                        Navigator.pushReplacement(
-                          context,
-                          CupertinoPageRoute(
-                            builder: (context) => const Home(),
-                          ),
-                        );
-
-                        return false;
-                      },
-                      child: const Settings(),
-                    ),
+                    builder: (context) => const Settings(),
                   ),
-                );
+                ).then((_) => setState(() {}));
               },
-              child: const Padding(
-                padding: EdgeInsets.only(right: 20.0),
-                child: Ikonate(
-                  Ikonate.settings,
-                ),
-              ),
+              tooltip: "Definições",
+              icon: const Icon(Ionicons.ios_settings_outline),
             ),
           ],
         ),
@@ -154,8 +134,7 @@ class _HomeState extends State<Home> {
                                 10.0,
                                 20.0,
                               ),
-                              child: PrettyButtons.audio(
-                                context: context,
+                              child: AudioButton(
                                 name: item.value.audioName,
                                 url: item.value.audioURL,
                               ),
@@ -164,14 +143,6 @@ class _HomeState extends State<Home> {
                         ).toList(),
                       ),
                     ),
-                    (LocalData.retrieveData(
-                              context: context,
-                              box: "preferences",
-                              itemID: "infinite_scroll",
-                            ) ==
-                            true)
-                        ? Container()
-                        : backToBeginning(),
                   ],
                 );
               } else {
