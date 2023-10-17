@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:ui';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
@@ -115,54 +116,57 @@ class _AudioButtonState extends State<AudioButton> {
                   const Spacer(),
                   Row(
                     children: [
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.all(20.0),
-                          child: ElevatedButton(
-                            child: const Icon(CupertinoIcons.square_list),
-                            onPressed: () {
-                              AwesomeDialog(
-                                context: context,
-                                animType: AnimType.scale,
-                                dialogType: DialogType.noHeader,
-                                body: Padding(
-                                  padding: const EdgeInsets.all(20.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      const Text(
-                                        "Utilizar Som",
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
+                      Visibility(
+                        visible: Platform.isAndroid,
+                        child: Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.all(20.0),
+                            child: ElevatedButton(
+                              child: const Icon(CupertinoIcons.square_list),
+                              onPressed: () {
+                                AwesomeDialog(
+                                  context: context,
+                                  animType: AnimType.scale,
+                                  dialogType: DialogType.noHeader,
+                                  body: Padding(
+                                    padding: const EdgeInsets.all(20.0),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        const Text(
+                                          "Utilizar Som",
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                          ),
                                         ),
-                                      ),
-                                      const Padding(
-                                        padding: EdgeInsets.all(10.0),
-                                        child: Text(
-                                          "Podes definir este som como qualquer uma das seguintes opções:",
+                                        const Padding(
+                                          padding: EdgeInsets.all(10.0),
+                                          child: Text(
+                                            "Podes definir este som como qualquer uma das seguintes opções:",
+                                          ),
                                         ),
-                                      ),
-                                      Buttons.useButton(
-                                        context: context,
-                                        audioURL: widget.url,
-                                        usageTitle: "Toque de Chamada",
-                                      ),
-                                      Buttons.useButton(
-                                        context: context,
-                                        audioURL: widget.url,
-                                        usageTitle: "Notificação",
-                                      ),
-                                      Buttons.useButton(
-                                        context: context,
-                                        audioURL: widget.url,
-                                        usageTitle: "Alarme",
-                                      ),
-                                    ],
+                                        Buttons.useButton(
+                                          context: context,
+                                          audioURL: widget.url,
+                                          usageTitle: "Toque de Chamada",
+                                        ),
+                                        Buttons.useButton(
+                                          context: context,
+                                          audioURL: widget.url,
+                                          usageTitle: "Notificação",
+                                        ),
+                                        Buttons.useButton(
+                                          context: context,
+                                          audioURL: widget.url,
+                                          usageTitle: "Alarme",
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              ).show();
-                            },
+                                ).show();
+                              },
+                            ),
                           ),
                         ),
                       ),
