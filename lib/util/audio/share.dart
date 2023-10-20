@@ -14,27 +14,34 @@ class ShareAudio {
   }) async {
     final documents = await getApplicationDocumentsDirectory();
 
-    //Download File
-    final file = await Download.saveAudio(
-      context: context,
-      audioName: audioName,
-      audioURL: audioURL,
-      fileDirectory: documents.path,
-    );
-
-    //Check Downloaded File
-    if (file != null) {
-      //Share File
-      // ignore: deprecated_member_use
-      await Share.shareFiles([file.path], text: audioName);
-    } else {
-      //Invalid or Null File
-      Toasts.show(
+    if (context.mounted) {
+      //Download File
+      final file = await Download.saveAudio(
         context: context,
-        toastType: ToastType.error,
-        title: "Erro",
-        message: "Erro ao Partilhar",
+        audioName: audioName,
+        audioURL: audioURL,
+        fileDirectory: documents.path,
       );
+
+      //Check Downloaded File
+      if (file != null) {
+        //Share File
+        await Share.shareXFiles(
+          [XFile(file.path)],
+          subject: audioName,
+          text: audioName,
+        );
+      } else {
+        //Invalid or Null File
+        if (context.mounted) {
+          Toasts.show(
+            context: context,
+            toastType: ToastType.error,
+            title: "Erro",
+            message: "Erro ao Partilhar",
+          );
+        }
+      }
     }
   }
 }

@@ -11,24 +11,14 @@ import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:icony/icony_ikonate.dart';
 import 'package:settings_ui/settings_ui.dart';
 
-class Settings extends StatefulWidget {
+class Settings extends StatelessWidget {
   const Settings({super.key});
 
-  @override
-  State<Settings> createState() => _SettingsState();
-}
-
-class _SettingsState extends State<Settings> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          "Definições",
-          style: TextStyle(
-            letterSpacing: 2.0,
-          ),
-        ),
+        title: const Text("Definições"),
       ),
       body: SafeArea(
         child: FutureBuilder(
@@ -49,16 +39,12 @@ class _SettingsState extends State<Settings> {
                   title: const Text("Visual"),
                   tiles: <SettingsTile>[
                     SettingsTile.switchTile(
-                      initialValue: (snapshot.data == AdaptiveThemeMode.light)
-                          ? false
-                          : true,
+                      initialValue: ThemeController.current(context: context),
                       onToggle: (mode) {
-                        setState(() {
-                          ThemeController.setAppearance(
-                            context: context,
-                            mode: mode,
-                          );
-                        });
+                        ThemeController.setAppearance(
+                          context: context,
+                          mode: mode,
+                        );
                       },
                       leading:
                           (Theme.of(context).brightness == Brightness.light)
@@ -69,115 +55,6 @@ class _SettingsState extends State<Settings> {
                             ? "Modo Claro"
                             : "Modo Escuro",
                       ),
-                    ),
-                    SettingsTile.navigation(
-                      leading: const Icon(Ionicons.swap_vertical),
-                      title: const Text("Orientação"),
-                      onPressed: (context) {
-                        showAdaptiveDialog(
-                          context: context,
-                          barrierDismissible: true,
-                          builder: (context) {
-                            return Dialog(
-                              backgroundColor:
-                                  Theme.of(context).scaffoldBackgroundColor,
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  const Padding(
-                                    padding: EdgeInsets.all(20.0),
-                                    child: Text(
-                                      "Orientação da Lista de Memes",
-                                      style: TextStyle(fontSize: 18.0),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(20.0),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        ElevatedButton(
-                                          onPressed: () async {
-                                            await LocalData.saveData(
-                                              context: context,
-                                              box: "preferences",
-                                              data: {
-                                                "orientation": "vertical",
-                                              },
-                                            );
-
-                                            //Notify User
-                                            if (mounted) {
-                                              Navigator.pop(context);
-
-                                              Toasts.show(
-                                                context: context,
-                                                toastType: ToastType.success,
-                                                title: "Feito!",
-                                                message: "Orientação: Vertical",
-                                              );
-                                            }
-                                          },
-                                          child: const Text("Vertical"),
-                                        ),
-                                        ElevatedButton(
-                                          onPressed: () async {
-                                            await LocalData.saveData(
-                                              context: context,
-                                              box: "preferences",
-                                              data: {
-                                                "orientation": "horizontal",
-                                              },
-                                            );
-
-                                            //Notify User
-                                            if (mounted) {
-                                              Navigator.pop(context);
-
-                                              Toasts.show(
-                                                context: context,
-                                                toastType: ToastType.success,
-                                                title: "Feito!",
-                                                message:
-                                                    "Orientação: Horizontal",
-                                              );
-                                            }
-                                          },
-                                          child: const Text("Horizontal"),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            );
-                          },
-                        );
-                      },
-                    ),
-                    SettingsTile.switchTile(
-                      leading: const Icon(
-                        Ionicons.ios_arrow_down_circle_outline,
-                      ),
-                      title: const Text("Lista Infinita"),
-                      initialValue: (LocalData.retrieveData(
-                            context: context,
-                            box: "preferences",
-                            itemID: "infinite_scroll",
-                          )) ??
-                          false,
-                      onToggle: (mode) {
-                        setState(() {
-                          LocalData.saveData(
-                            context: context,
-                            box: "preferences",
-                            data: {
-                              "infinite_scroll": mode,
-                            },
-                          );
-                        });
-                      },
                     ),
                   ],
                 ),
@@ -208,7 +85,9 @@ class _SettingsState extends State<Settings> {
                               applicationIcon: Padding(
                                 padding: const EdgeInsets.all(20.0),
                                 child: Image.asset(
-                                  "assets/images/logo_no_background.png",
+                                  ThemeController.current(context: context)
+                                      ? "assets/images/logo_no_background_dark.png"
+                                      : "assets/images/logo_no_background.png",
                                   height: 100.0,
                                 ),
                               ),

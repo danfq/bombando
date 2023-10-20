@@ -1,4 +1,5 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:bombando/pages/favorites.dart';
 import 'package:bombando/pages/settings.dart';
 import 'package:bombando/util/audio/model.dart';
 import 'package:bombando/util/data/local.dart';
@@ -11,43 +12,13 @@ import 'package:flutter/services.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:icony/icony_ikonate.dart';
 
-class Home extends StatefulWidget {
+class Home extends StatelessWidget {
   const Home({super.key});
 
   @override
-  State<Home> createState() => _HomeState();
-}
-
-class _HomeState extends State<Home> {
-  @override
   Widget build(BuildContext context) {
-    //Carousel Controller
-    CarouselController carouselController = CarouselController();
-
-    //Infinite Scroll
-    bool? infiniteScroll = LocalData.retrieveData(
-          context: context,
-          box: "preferences",
-          itemID: "infinite_scroll",
-        ) ??
-        false;
-
-    //Current Feed Orientation
-    String? currentOrientation = LocalData.retrieveData(
-      context: context,
-      box: "preferences",
-      itemID: "orientation",
-    );
-
-    Axis parseOrientation({required String orientation}) {
-      if (orientation == "vertical") {
-        return Axis.vertical;
-      } else if (orientation == "horizontal") {
-        return Axis.horizontal;
-      } else {
-        return Axis.horizontal;
-      }
-    }
+    ///List Controller
+    ScrollController listController = ScrollController();
 
     //App
     return WillPopScope(
@@ -71,6 +42,8 @@ class _HomeState extends State<Home> {
       },
       child: Scaffold(
         appBar: AppBar(
+          scrolledUnderElevation: 0.0,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           title: const Text(
             "Bombando",
             style: TextStyle(
@@ -79,23 +52,37 @@ class _HomeState extends State<Home> {
           ),
           centerTitle: false,
           actions: [
-            infiniteScroll == false
-                ? IconButton(
-                    onPressed: () async {
-                      await carouselController.animateToPage(0);
-                    },
-                    tooltip: "Voltar ao Início",
-                    icon: const Icon(Ionicons.return_up_back),
-                  )
-                : Container(),
             IconButton(
               onPressed: () async {
-                await Navigator.push(
+                await listController.animateTo(
+                  0.0,
+                  duration: const Duration(milliseconds: 400),
+                  curve: Curves.bounceInOut,
+                );
+              },
+              tooltip: "Voltar ao Início",
+              icon: const Icon(Ionicons.return_up_back),
+            ),
+            IconButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  CupertinoPageRoute(
+                    builder: (context) => const Favorites(),
+                  ),
+                );
+              },
+              tooltip: "Favoritos",
+              icon: const Icon(Ionicons.ios_heart_outline),
+            ),
+            IconButton(
+              onPressed: () async {
+                Navigator.push(
                   context,
                   CupertinoPageRoute(
                     builder: (context) => const Settings(),
                   ),
-                ).then((_) => setState(() {}));
+                );
               },
               tooltip: "Definições",
               icon: const Icon(Ionicons.ios_settings_outline),
@@ -108,39 +95,24 @@ class _HomeState extends State<Home> {
             builder: (context, AsyncSnapshot<Map<int, AudioFile>> snapshot) {
               if (snapshot.connectionState == ConnectionState.done &&
                   snapshot.data != null) {
-                final audioItem = snapshot.data!;
+                final audioItems = snapshot.data!;
 
                 return Column(
                   children: [
                     Expanded(
-                      child: CarouselSlider(
-                        carouselController: carouselController,
-                        options: CarouselOptions(
-                          scrollPhysics: const BouncingScrollPhysics(),
-                          height: double.infinity,
-                          initialPage: 0,
-                          autoPlay: false,
-                          enableInfiniteScroll: infiniteScroll ?? false,
-                          scrollDirection: parseOrientation(
-                            orientation: currentOrientation ?? "vertical",
-                          ),
-                        ),
-                        items: audioItem.entries.map(
-                          (item) {
-                            return Padding(
-                              padding: const EdgeInsets.fromLTRB(
-                                10.0,
-                                20.0,
-                                10.0,
-                                20.0,
-                              ),
-                              child: AudioButton(
-                                name: item.value.audioName,
-                                url: item.value.audioURL,
-                              ),
-                            );
-                          },
-                        ).toList(),
+                      child: ListView.builder(
+                        controller: listController,
+                        itemCount: audioItems.entries.length,
+                        itemBuilder: (context, index) {
+                          //Audio Item
+                          final audio =
+                              audioItems.entries.elementAt(index).value;
+
+                          return AudioButton(
+                            name: audio.audioName,
+                            url: audio.audioURL,
+                          );
+                        },
                       ),
                     ),
                   ],

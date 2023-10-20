@@ -1,10 +1,16 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 ///Theme Controller
 class ThemeController {
-  //Set Appearance Mode
+  ///Current Theme
+  static bool current({required BuildContext context}) {
+    return Theme.of(context).brightness == Brightness.dark;
+  }
+
+  ///Set Appearance Mode
   static void setAppearance({
     required BuildContext context,
     required bool mode,

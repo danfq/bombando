@@ -4,14 +4,9 @@ import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:icony/icony_ikonate.dart';
 import 'package:settings_ui/settings_ui.dart';
 
-class Team extends StatefulWidget {
+class Team extends StatelessWidget {
   const Team({super.key});
 
-  @override
-  State<Team> createState() => _TeamState();
-}
-
-class _TeamState extends State<Team> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

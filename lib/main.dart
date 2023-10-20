@@ -9,7 +9,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   //Open Boxes
-  await LocalData.openBoxes();
+  await LocalStorage.init();
 
   //Run App
   runApp(

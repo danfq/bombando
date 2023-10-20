@@ -1,27 +1,24 @@
-import 'dart:io';
-import 'dart:ui';
 import 'package:audioplayers/audioplayers.dart';
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:bombando/util/audio/manager.dart';
 import 'package:bombando/util/audio/share.dart';
-import 'package:bombando/widgets/button.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:bombando/util/data/local.dart';
 import 'package:bombando/util/data/web.dart';
+import 'package:bombando/util/theming/controller.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:mini_music_visualizer/mini_music_visualizer.dart';
 
 class AudioButton extends StatefulWidget {
   const AudioButton({
-    super.key,
+    Key? key,
     required this.name,
     required this.url,
-  });
+    this.showFavorite = true,
+  }) : super(key: key);
 
-  ///Audio Name
   final String name;
-
-  ///Audio URL
   final String url;
+  final bool showFavorite;
 
   @override
   State<AudioButton> createState() => _AudioButtonState();
@@ -36,163 +33,172 @@ class _AudioButtonState extends State<AudioButton> {
     playing = await AudioPlayerManager.checkIfPlaying(playerID: widget.name);
   }
 
+  ///Audio URL
+  String audioURL = "";
+
+  ///Favorite Status
+  bool favorite = false;
+
   @override
   void initState() {
     super.initState();
 
-    //Playing Status
+    //Set Audio URL
+    audioURL = AudioPlayerManager.extractAudioURL(audioHTML: widget.url);
+
+    //Get Playing Status
     getPlayingStatus();
+
+    //Get Favorite Status
+    final boxData = LocalStorage.boxData(box: "favorites");
+
+    if (boxData != null && boxData.containsKey("list")) {
+      final listMap = boxData["list"] as Map<dynamic, dynamic>;
+
+      if (listMap.containsKey(widget.name)) {
+        favorite = listMap[widget.name] != null;
+      }
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      borderRadius: BorderRadius.circular(8.0),
-      onTap: () async {
-        if (playing) {
-          await AudioPlayerManager.stopPlayer(playerID: widget.name);
-        } else {
-          //Audio Player
-          final player = await AudioPlayerManager.playFromURL(
-            name: widget.name,
-            url: AudioPlayerManager.extractAudioURL(audioHTML: widget.url),
-          );
-
-          //On Complete
-          player.onPlayerStateChanged.listen((state) {
-            if (state != PlayerState.playing) {
-              setState(() {
-                playing = false;
-              });
-            }
-          });
-        }
-
-        setState(() {
-          playing = !playing;
-        });
-      },
-      child: Card(
-        elevation: 8.0,
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(8.0),
-          child: Stack(
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(8.0),
-                child: ImageFiltered(
-                  imageFilter: ImageFilter.blur(sigmaX: 4.0, sigmaY: 4.0),
-                  child: Image.asset(
-                    "assets/images/audio_background.png",
-                    height: double.infinity,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
-                  ),
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(10.0, 20.0, 10.0, 20.0),
+      child: ListTile(
+        tileColor: Theme.of(context).cardColor,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(14.0),
+        ),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Expanded(
+              child: Text(
+                widget.name,
+                style: const TextStyle(
+                  fontSize: 14.0,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Flexible(
-                          child: Text(
-                            widget.name,
-                            style: const TextStyle(
-                              fontSize: 18.0,
-                              fontWeight: FontWeight.bold,
-                              fontStyle: FontStyle.italic,
-                            ),
-                          ),
-                        ),
-                        playing ? const MiniMusicVisualizer() : Container(),
-                      ],
-                    ),
+            ),
+          ],
+        ),
+        leading: SizedBox(
+          width: 20.0,
+          child: AnimatedSwitcher(
+            duration: const Duration(milliseconds: 400),
+            child: playing
+                ? const MiniMusicVisualizer()
+                : Image.asset(
+                    ThemeController.current(context: context)
+                        ? "assets/images/logo_no_background_dark.png"
+                        : "assets/images/logo_no_background.png",
+                    width: 40.0,
                   ),
-                  const Spacer(),
-                  Row(
-                    children: [
-                      Visibility(
-                        visible: Platform.isAndroid,
-                        child: Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.all(20.0),
-                            child: ElevatedButton(
-                              child: const Icon(CupertinoIcons.square_list),
-                              onPressed: () {
-                                AwesomeDialog(
-                                  context: context,
-                                  animType: AnimType.scale,
-                                  dialogType: DialogType.noHeader,
-                                  body: Padding(
-                                    padding: const EdgeInsets.all(20.0),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        const Text(
-                                          "Utilizar Som",
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        const Padding(
-                                          padding: EdgeInsets.all(10.0),
-                                          child: Text(
-                                            "Podes definir este som como qualquer uma das seguintes opções:",
-                                          ),
-                                        ),
-                                        Buttons.useButton(
-                                          context: context,
-                                          audioURL: widget.url,
-                                          usageTitle: "Toque de Chamada",
-                                        ),
-                                        Buttons.useButton(
-                                          context: context,
-                                          audioURL: widget.url,
-                                          usageTitle: "Notificação",
-                                        ),
-                                        Buttons.useButton(
-                                          context: context,
-                                          audioURL: widget.url,
-                                          usageTitle: "Alarme",
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ).show();
-                              },
-                            ),
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.all(20.0),
-                          child: ElevatedButton(
-                            child: const Icon(CupertinoIcons.share),
-                            onPressed: () {
-                              ShareAudio.downloadAndShare(
-                                context: context,
-                                audioName: widget.name,
-                                audioURL:
-                                    "${Web.audioURL}${AudioPlayerManager.extractAudioURL(audioHTML: widget.url)}.mp3",
-                              );
-                            },
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ],
           ),
         ),
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            //Favorite
+            Visibility(
+              visible: widget.showFavorite,
+              child: IconButton(
+                onPressed: () async {
+                  //Add or Remove from Favorites
+                  if (favorite) {
+                    //Remove Favorite
+                    final boxData = LocalStorage.boxData(box: "favorites");
+
+                    if (boxData != null && boxData.containsKey("list")) {
+                      final listMap = boxData["list"] as Map<dynamic, dynamic>;
+
+                      if (listMap.containsKey(widget.name)) {
+                        //Remove from Favorites
+                        listMap.remove(widget.name);
+
+                        //Update Data
+                        await LocalStorage.setData(
+                          box: "favorites",
+                          data: {"list": listMap},
+                        );
+                      }
+                    }
+                  } else {
+                    //Add Favorite
+                    final boxData = LocalStorage.boxData(box: "favorites");
+
+                    Map<dynamic, dynamic> listMap = {};
+
+                    if (boxData != null && boxData.containsKey("list")) {
+                      listMap = boxData["list"] as Map<dynamic, dynamic>;
+                    }
+
+                    //Add Favorite
+                    listMap[widget.name] = widget.url;
+
+                    //Update Data
+                    await LocalStorage.setData(
+                      box: "favorites",
+                      data: {"list": listMap},
+                    );
+                  }
+
+                  //Update UI
+                  setState(() {
+                    favorite = !favorite;
+                  });
+                },
+                icon: favorite
+                    ? Icon(
+                        Ionicons.ios_heart,
+                        color: Theme.of(context).colorScheme.secondary,
+                      )
+                    : const Icon(Ionicons.ios_heart_outline),
+              ),
+            ),
+
+            //Share
+            IconButton(
+              onPressed: () {
+                ShareAudio.downloadAndShare(
+                  context: context,
+                  audioName: widget.name,
+                  audioURL: "${Web.audioURL}$audioURL.mp3",
+                );
+              },
+              icon: const Icon(Ionicons.ios_share_outline),
+            ),
+          ],
+        ),
+        onTap: () async {
+          if (playing) {
+            await AudioPlayerManager.stopPlayer(playerID: widget.name);
+          } else {
+            //Audio Player
+            final player = await AudioPlayerManager.playFromURL(
+              name: widget.name,
+              url: audioURL,
+            );
+
+            //On Complete
+            player.onPlayerStateChanged.listen((state) {
+              if (state != PlayerState.playing) {
+                if (mounted) {
+                  setState(() {
+                    playing = false;
+                  });
+                }
+              }
+            });
+          }
+
+          setState(() {
+            playing = !playing;
+          });
+        },
       ),
     );
   }
