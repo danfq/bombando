@@ -44,12 +44,15 @@ class Web {
     final audioMap = <int, AudioFile>{};
 
     for (var audioIndex = 0; audioIndex < audioList.length; audioIndex++) {
-      audioMap.addAll({
-        audioIndex: AudioFile(
-          audioName: audioNames[audioIndex],
-          audioURL: audioList[audioIndex]!,
-        ),
-      });
+      //Check for Ukranian Meme
+      if (!audioNames[audioIndex].contains("ucrania")) {
+        audioMap.addAll({
+          audioIndex: AudioFile(
+            audioName: audioNames[audioIndex],
+            audioURL: audioList[audioIndex]!,
+          ),
+        });
+      }
     }
 
     return audioMap;
