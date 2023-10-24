@@ -25,12 +25,18 @@ class ShareAudio {
 
       //Check Downloaded File
       if (file != null) {
-        //Share File
-        await Share.shareXFiles(
-          [XFile(file.path)],
-          subject: audioName,
-          text: audioName,
-        );
+        if (context.mounted) {
+          //Position
+          final box = context.findRenderObject() as RenderBox?;
+
+          //Share File
+          await Share.shareXFiles(
+            [XFile(file.path)],
+            subject: audioName,
+            text: audioName,
+            sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
+          );
+        }
       } else {
         //Invalid or Null File
         if (context.mounted) {
