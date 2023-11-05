@@ -32,8 +32,6 @@ class ShareAudio {
           //Share File
           await Share.shareXFiles(
             [XFile(file.path)],
-            subject: audioName,
-            text: audioName,
             sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
           );
         }

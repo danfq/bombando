@@ -12,7 +12,11 @@ class Favorites extends StatelessWidget {
     final favorites = LocalStorage.boxData(box: "favorites")?["list"] ?? [];
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Favoritos")),
+      appBar: AppBar(
+        title: const Text("Favoritos"),
+        scrolledUnderElevation: 0.0,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      ),
       body: SafeArea(
         child: favorites.isNotEmpty
             ? ListView.builder(
