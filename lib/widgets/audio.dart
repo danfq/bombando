@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:audioplayers/audioplayers.dart';
 import 'package:bombando/util/audio/manager.dart';
+import 'package:bombando/util/audio/ringtone.dart';
 import 'package:bombando/util/audio/share.dart';
 import 'package:bombando/util/data/local.dart';
 import 'package:bombando/util/data/web.dart';
@@ -7,6 +10,7 @@ import 'package:bombando/util/theming/controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:mini_music_visualizer/mini_music_visualizer.dart';
+import 'package:pull_down_button/pull_down_button.dart';
 
 class AudioButton extends StatefulWidget {
   const AudioButton({
@@ -64,7 +68,7 @@ class _AudioButtonState extends State<AudioButton> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(10.0, 20.0, 10.0, 20.0),
+      padding: const EdgeInsets.fromLTRB(10.0, 20.0, 10.0, 14.0),
       child: ListTile(
         tileColor: Theme.of(context).cardColor,
         shape: RoundedRectangleBorder(
@@ -160,16 +164,42 @@ class _AudioButtonState extends State<AudioButton> {
               ),
             ),
 
-            //Share
-            IconButton(
-              onPressed: () {
-                ShareAudio.downloadAndShare(
-                  context: context,
-                  audioName: widget.name,
-                  audioURL: "${Web.audioURL}$audioURL.mp3",
+            //Extra Options
+            PullDownButton(
+              itemBuilder: (context) {
+                return [
+                  //Share
+                  PullDownMenuItem(
+                    onTap: () async {
+                      await ShareAudio.downloadAndShare(
+                        context: context,
+                        audioName: widget.name,
+                        audioURL: "${Web.audioURL}$audioURL.mp3",
+                      );
+                    },
+                    icon: Ionicons.ios_share_outline,
+                    title: "Share",
+                  ),
+
+                  //Set as Ringtone
+                  PullDownMenuItem(
+                    enabled: Platform.isAndroid,
+                    onTap: () async {
+                      await RingtoneManager(context).setByURL(
+                        url: "${Web.audioURL}$audioURL.mp3",
+                      );
+                    },
+                    icon: Ionicons.ios_phone_portrait_outline,
+                    title: "Set as Ringtone",
+                  ),
+                ];
+              },
+              buttonBuilder: (context, showMenu) {
+                return IconButton(
+                  onPressed: showMenu,
+                  icon: const Icon(Ionicons.ios_ellipsis_vertical),
                 );
               },
-              icon: const Icon(Ionicons.ios_share_outline),
             ),
           ],
         ),
