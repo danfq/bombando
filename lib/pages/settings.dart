@@ -1,14 +1,9 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
-import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:bombando/pages/home.dart';
 import 'package:bombando/pages/team.dart';
-import 'package:bombando/util/data/local.dart';
-import 'package:bombando/util/notifications/toast.dart';
 import 'package:bombando/util/theming/controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
-import 'package:icony/icony_ikonate.dart';
 import 'package:settings_ui/settings_ui.dart';
 
 class Settings extends StatelessWidget {

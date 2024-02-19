@@ -25,7 +25,6 @@ dependencies:
   icons_launcher: ^2.0.5
   flutter_native_splash: ^2.2.12
   flutter_staggered_grid_view: ^0.6.2
-  awesome_dialog: ^3.0.2
   adaptive_theme: ^3.1.1
   icony: ^1.0.5
   settings_ui: ^2.0.2

@@ -1,3 +1,4 @@
+import 'package:bombando/util/notifications/toast.dart';
 import 'package:flutter/material.dart';
 import 'package:ringtone_set/ringtone_set.dart';
 
@@ -38,7 +39,16 @@ class RingtoneManager {
                   padding: const EdgeInsets.all(10.0),
                   child: ElevatedButton(
                     onPressed: () async {
-                      await RingtoneSet.setRingtoneFromNetwork(url);
+                      await RingtoneSet.setRingtoneFromNetwork(url).then(
+                        (value) {
+                          Toasts.show(
+                            context: context,
+                            toastType: ToastType.success,
+                            title: "Toque Definido!",
+                            message: "Toque definido com sucesso!",
+                          );
+                        },
+                      );
                     },
                     child: const Text("Toque de Chamada"),
                   ),
@@ -52,7 +62,16 @@ class RingtoneManager {
                   padding: const EdgeInsets.all(10.0),
                   child: ElevatedButton(
                     onPressed: () async {
-                      await RingtoneSet.setNotificationFromNetwork(url);
+                      await RingtoneSet.setNotificationFromNetwork(url).then(
+                        (value) {
+                          Toasts.show(
+                            context: context,
+                            toastType: ToastType.success,
+                            title: "Toque Definido!",
+                            message: "Toque definido com sucesso!",
+                          );
+                        },
+                      );
                     },
                     child: const Text("Toque de Notificação"),
                   ),
@@ -66,7 +85,16 @@ class RingtoneManager {
                   padding: const EdgeInsets.all(10.0),
                   child: ElevatedButton(
                     onPressed: () async {
-                      await RingtoneSet.setAlarmFromNetwork(url);
+                      await RingtoneSet.setAlarmFromNetwork(url).then(
+                        (value) {
+                          Toasts.show(
+                            context: context,
+                            toastType: ToastType.success,
+                            title: "Toque Definido!",
+                            message: "Toque definido com sucesso!",
+                          );
+                        },
+                      );
                     },
                     child: const Text("Toque de Alarme"),
                   ),
