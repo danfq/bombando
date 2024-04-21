@@ -5,17 +5,21 @@ import 'package:bombando/util/data/web.dart';
 import 'package:bombando/widgets/audio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
   const Home({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    ///List Controller
-    ScrollController listController = ScrollController();
+  State<Home> createState() => _HomeState();
+}
 
+class _HomeState extends State<Home> {
+  ///List Controller
+  ScrollController listController = ScrollController();
+
+  @override
+  Widget build(BuildContext context) {
     //App
     return Scaffold(
       appBar: AppBar(
@@ -41,13 +45,13 @@ class Home extends StatelessWidget {
             icon: const Icon(Ionicons.return_up_back),
           ),
           IconButton(
-            onPressed: () {
-              Navigator.push(
+            onPressed: () async {
+              await Navigator.push(
                 context,
                 CupertinoPageRoute(
                   builder: (context) => const Favorites(),
                 ),
-              );
+              ).then((_) => setState(() {}));
             },
             tooltip: "Favoritos",
             icon: const Icon(Ionicons.ios_heart_outline),

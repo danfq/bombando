@@ -3,6 +3,7 @@ import 'package:bombando/pages/home.dart';
 import 'package:bombando/util/data/local.dart';
 import 'package:bombando/util/theming/themes.dart';
 import 'package:flutter/material.dart';
+import 'package:get/route_manager.dart';
 
 Future<void> main() async {
   //Ensure Binding is Initialized
@@ -18,7 +19,7 @@ Future<void> main() async {
       dark: Themes.dark(),
       initial: AdaptiveThemeMode.system,
       builder: (light, dark) {
-        return MaterialApp(
+        return GetMaterialApp(
           theme: light,
           darkTheme: dark,
           home: const Home(),
