@@ -1,11 +1,13 @@
 import 'package:bombando/pages/favorites.dart';
 import 'package:bombando/pages/settings.dart';
+import 'package:bombando/pages/sounds.dart';
 import 'package:bombando/util/audio/model.dart';
 import 'package:bombando/util/data/web.dart';
 import 'package:bombando/widgets/audio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
+import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -17,6 +19,26 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   ///List Controller
   ScrollController listController = ScrollController();
+
+  ///Current Index
+  int _navIndex = 0;
+
+  ///Body
+  Widget body() {
+    switch (_navIndex) {
+      //Home - Sounds
+      case 0:
+        return Sounds(listController: listController);
+
+      //Favorites
+      case 1:
+        return const Favorites();
+
+      //Default
+      default:
+        return Container();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,29 +57,6 @@ class _HomeState extends State<Home> {
         actions: [
           IconButton(
             onPressed: () async {
-              await listController.animateTo(
-                0.0,
-                duration: const Duration(milliseconds: 400),
-                curve: Curves.bounceInOut,
-              );
-            },
-            tooltip: "Voltar ao Início",
-            icon: const Icon(Ionicons.return_up_back),
-          ),
-          IconButton(
-            onPressed: () async {
-              await Navigator.push(
-                context,
-                CupertinoPageRoute(
-                  builder: (context) => const Favorites(),
-                ),
-              ).then((_) => setState(() {}));
-            },
-            tooltip: "Favoritos",
-            icon: const Icon(Ionicons.ios_heart_outline),
-          ),
-          IconButton(
-            onPressed: () async {
               Navigator.push(
                 context,
                 CupertinoPageRoute(
@@ -70,39 +69,43 @@ class _HomeState extends State<Home> {
           ),
         ],
       ),
-      body: SafeArea(
-        child: FutureBuilder(
-          future: Web.audioMap(),
-          builder: (context, AsyncSnapshot<Map<int, AudioFile>> snapshot) {
-            if (snapshot.connectionState == ConnectionState.done &&
-                snapshot.data != null) {
-              final audioItems = snapshot.data!;
-
-              return Column(
-                children: [
-                  Expanded(
-                    child: ListView.builder(
-                      controller: listController,
-                      itemCount: audioItems.entries.length,
-                      itemBuilder: (context, index) {
-                        //Audio Item
-                        final audio = audioItems.entries.elementAt(index).value;
-
-                        return AudioButton(
-                          name: audio.audioName,
-                          url: audio.audioURL,
-                        );
-                      },
-                    ),
-                  ),
-                ],
-              );
-            } else {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
+      body: SafeArea(child: body()),
+      floatingActionButton: _navIndex == 0
+          ? FloatingActionButton(
+              child: const Icon(Ionicons.return_up_back, color: Colors.white),
+              onPressed: () async {
+                await listController.animateTo(
+                  0.0,
+                  duration: const Duration(milliseconds: 400),
+                  curve: Curves.bounceInOut,
+                );
+              },
+            )
+          : null,
+      bottomNavigationBar: ClipRRect(
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(14.0)),
+        child: SalomonBottomBar(
+          currentIndex: _navIndex,
+          backgroundColor: Theme.of(context).dialogBackgroundColor,
+          selectedItemColor: Theme.of(context).colorScheme.secondary,
+          onTap: (index) {
+            setState(() {
+              _navIndex = index;
+            });
           },
+          items: [
+            //Home
+            SalomonBottomBarItem(
+              icon: const Icon(Feather.volume_2),
+              title: const Text("Início"),
+            ),
+
+            //Favorites
+            SalomonBottomBarItem(
+              icon: const Icon(Feather.star),
+              title: const Text("Favoritos"),
+            ),
+          ],
         ),
       ),
     );
