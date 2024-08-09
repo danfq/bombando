@@ -23,6 +23,7 @@ class Sounds extends StatelessWidget {
               Expanded(
                 child: ListView.builder(
                   controller: listController,
+                  physics: const BouncingScrollPhysics(),
                   itemCount: audioItems.entries.length,
                   itemBuilder: (context, index) {
                     //Audio Item

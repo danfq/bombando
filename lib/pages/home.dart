@@ -1,8 +1,10 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:bombando/pages/favorites.dart';
 import 'package:bombando/pages/settings.dart';
 import 'package:bombando/pages/sounds.dart';
 import 'package:bombando/util/audio/model.dart';
 import 'package:bombando/util/data/web.dart';
+import 'package:bombando/util/theming/controller.dart';
 import 'package:bombando/widgets/audio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +21,9 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   ///List Controller
   ScrollController listController = ScrollController();
+
+  ///List At Top
+  bool listAtTop = true;
 
   ///Current Index
   int _navIndex = 0;
@@ -41,8 +46,42 @@ class _HomeState extends State<Home> {
   }
 
   @override
+  void initState() {
+    super.initState();
+
+    //Set Up List Scroll Position Listener
+    listController.addListener(() {
+      if (listController.offset <= 0) {
+        //List at Top
+        setState(() {
+          listAtTop = true;
+        });
+      } else {
+        setState(() {
+          listAtTop = false;
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    //Dispose of List Controller
+    listController.dispose();
+
+    super.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    //Status & Nav
+    ThemeController.statusAndNav(mode: AdaptiveTheme.of(context).mode);
+  }
+
+  @override
   Widget build(BuildContext context) {
-    //App
     return Scaffold(
       appBar: AppBar(
         scrolledUnderElevation: 0.0,
@@ -70,7 +109,7 @@ class _HomeState extends State<Home> {
         ],
       ),
       body: SafeArea(child: body()),
-      floatingActionButton: _navIndex == 0
+      floatingActionButton: _navIndex == 0 && !listAtTop
           ? FloatingActionButton(
               child: const Icon(Ionicons.return_up_back, color: Colors.white),
               onPressed: () async {

@@ -23,6 +23,8 @@ class ThemeController {
     required BuildContext context,
   }) {
     AdaptiveTheme.of(context).setDark();
+
+    statusAndNav(mode: AdaptiveTheme.of(context).mode);
   }
 
   ///Set Light Mode
@@ -30,6 +32,8 @@ class ThemeController {
     required BuildContext context,
   }) {
     AdaptiveTheme.of(context).setLight();
+
+    statusAndNav(mode: AdaptiveTheme.of(context).mode);
   }
 
   ///Easy Toggle Mode
@@ -44,14 +48,14 @@ class ThemeController {
     if (mode == AdaptiveThemeMode.light) {
       SystemChrome.setSystemUIOverlayStyle(
         const SystemUiOverlayStyle(
-          systemNavigationBarColor: Color(0xFFFFFFFF),
+          systemNavigationBarColor: Color(0xFFF5F5F5),
           statusBarColor: Color(0xFFFFFEFD),
         ),
       );
     } else if (mode == AdaptiveThemeMode.dark) {
       SystemChrome.setSystemUIOverlayStyle(
         const SystemUiOverlayStyle(
-          systemNavigationBarColor: Color(0xFF0D2350),
+          systemNavigationBarColor: Color(0xFF212121),
           statusBarColor: Color(0xFF131313),
         ),
       );

@@ -15,8 +15,8 @@ Future<void> main() async {
   //Run App
   runApp(
     AdaptiveTheme(
-      light: Themes.light(),
-      dark: Themes.dark(),
+      light: Themes.light,
+      dark: Themes.dark,
       initial: AdaptiveThemeMode.system,
       builder: (light, dark) {
         return GetMaterialApp(
