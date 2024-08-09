@@ -17,8 +17,8 @@ class AudioFile {
 
   factory AudioFile.fromJSON(Map<String, dynamic> json) {
     return AudioFile(
-      audioName: json["name"],
-      audioURL: json["url"],
+      audioName: json["audioName"],
+      audioURL: json["audioURL"],
     );
   }
 }

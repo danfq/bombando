@@ -1,4 +1,5 @@
 import 'package:bombando/util/audio/model.dart';
+import 'package:bombando/util/data/local.dart';
 import 'package:html/parser.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
@@ -56,6 +57,24 @@ class Web {
     }
 
     return audioMap;
+  }
+
+  ///Cache Audio Items
+  static Future<void> cacheAudioItems() async {
+    //Audio Items
+    final audioItems = await audioMap();
+
+    //Save Items
+    await LocalStorage.setData(
+      box: "sounds",
+      data: {
+        "list": audioItems.entries.map(
+          (item) {
+            return item.value.toJSON();
+          },
+        ).toList(),
+      },
+    );
   }
 }
 

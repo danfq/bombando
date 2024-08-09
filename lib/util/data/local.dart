@@ -4,9 +4,7 @@ import 'package:path_provider/path_provider.dart';
 ///Local Storage
 class LocalStorage {
   ///Hive Boxes
-  static final _boxes = <String>[
-    "favorites",
-  ];
+  static final _boxes = <String>["favorites", "sounds"];
 
   ///Initialize Hive Storage
   static Future<void> init() async {
